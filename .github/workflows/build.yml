@@ -6,6 +6,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  parity:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Source checkout
+      uses: actions/checkout@v4
+    - name: Measure NT 5.2 parity
+      run: |
+        python3 tools/parity-metrics.py --version 0x502 --arch i386 \
+          --markdown parity.md --json parity-0x502-i386.json
+        cat parity.md >> $GITHUB_STEP_SUMMARY
+    - name: Upload parity report
+      uses: actions/upload-artifact@v4
+      with:
+        name: parity-${{ github.sha }}
+        path: |
+          parity.md
+          parity-0x502-i386.json
+
   build-linux:
     strategy:
       matrix:

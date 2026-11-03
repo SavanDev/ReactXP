@@ -17,6 +17,15 @@ Completar la paridad con el kernel NT que ReactOS tiene como objetivo (NT 5.2, l
 Windows Server 2003 / XP x64), para que el sistema se comporte lo más parecido posible a un
 Windows XP real.
 
+El avance se mide con `tools/parity-metrics.py`, que cuenta desde el código fuente las
+exportaciones que siguen siendo stubs (filtradas por versión NT y arquitectura, igual que
+`spec2def`) y los marcadores `UNIMPLEMENTED` / `STATUS_NOT_IMPLEMENTED` por componente. La CI
+publica el reporte en el resumen de cada ejecución.
+
+```sh
+tools/parity-metrics.py --version 0x502 --arch i386 > parity.md
+```
+
 ## Compilación con toolchain moderno
 
 Este fork compila sin RosBE, con herramientas actuales: GCC 16.2, binutils 2.46, mingw-w64 v14
