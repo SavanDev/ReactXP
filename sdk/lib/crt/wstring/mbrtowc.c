@@ -67,3 +67,12 @@ size_t CDECL mbrtowc(wchar_t *dst, const char *str,
         *state = s;
     return len;
 }
+
+// Small hack: import stub to allow GCC's stdc++ to link (same as rand_s)
+#if defined(__GNUC__) && (DLL_EXPORT_VERSION < 0x600)
+#ifdef WIN64
+const void* __imp_mbrtowc = mbrtowc;
+#else
+const void* _imp__mbrtowc = mbrtowc; // i386 symbols get an extra underscore
+#endif
+#endif

@@ -388,7 +388,8 @@ private:
     string msg;
 };
 
-#ifdef __REACTOS__
+// Newer libstdc++ provides to_wstring even without a usable vswprintf
+#if defined(__REACTOS__) && !(defined(_GLIBCXX_RELEASE) && _GLIBCXX_RELEASE >= 13)
 inline wstring to_wstring(uint8_t a) { WCHAR buffer[16]; swprintf(buffer, L"%d", a); return wstring(buffer); } 
 inline wstring to_wstring(uint16_t a) { WCHAR buffer[16]; swprintf(buffer, L"%d", a); return wstring(buffer); }
 inline wstring to_wstring(uint32_t a) { WCHAR buffer[32]; swprintf(buffer, L"%ld", a); return wstring(buffer); }
