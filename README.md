@@ -1,3 +1,44 @@
+# ReactXP
+
+> [!IMPORTANT]
+> **Este es un fork personal de [ReactOS](https://github.com/reactos/reactos)** (basado en la versión 0.4.16).
+> No es un proyecto oficial ni está afiliado al equipo de ReactOS. Para el proyecto original,
+> visitá [reactos.org](https://reactos.org/).
+
+> [!NOTE]
+> **Desarrollo asistido por IA.** Parte del análisis, la depuración y los cambios de código de este
+> repositorio se hacen con herramientas de IA (Claude Code). Los cambios se compilan y se prueban
+> en máquina virtual, pero tenelo en cuenta si reutilizás código de acá; si pensás proponerlo al
+> proyecto original, revisá antes sus políticas de contribución.
+
+## Objetivo
+
+Completar la paridad con el kernel NT que ReactOS tiene como objetivo (NT 5.2, la familia de
+Windows Server 2003 / XP x64), para que el sistema se comporte lo más parecido posible a un
+Windows XP real.
+
+## Compilación con toolchain moderno
+
+Este fork compila sin RosBE, con herramientas actuales: GCC 16.2, binutils 2.46, mingw-w64 v14
+(para msvcrt), CMake 4 y Ninja. El compilador cruzado se arma una sola vez con el script incluido:
+
+```sh
+# 1. Compilar el toolchain (unos 20 min, ~7 GB temporales)
+tools/build-toolchain.sh ~/toolchains/reactxp-i686
+
+# 2. Configurar y compilar ReactXP
+export PATH=~/toolchains/reactxp-i686/bin:$PATH
+cmake -S . -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE=toolchain-gcc.cmake -DARCH=i386
+cmake --build build
+cmake --build build --target bootcd livecd
+```
+
+Probado en i386 / Debug: compila completo y el LiveCD arranca hasta el escritorio en QEMU.
+
+---
+
+*A continuación, el README original de ReactOS:*
+
 <p align=center>
   <a href="https://reactos.org/">
     <img alt="ReactOS" src="https://reactos.org/wiki/images/0/02/ReactOS_logo.png">
